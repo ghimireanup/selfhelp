@@ -16,8 +16,25 @@ db.exec(`
     points       INTEGER NOT NULL DEFAULT 1,
     completed    INTEGER NOT NULL DEFAULT 0,
     completed_at TEXT,
-    created_at   TEXT    NOT NULL
+    created_at   TEXT    NOT NULL,
+    awarded      INTEGER NOT NULL DEFAULT 0
   );
+
+  CREATE TABLE IF NOT EXISTS stats (
+    id             INTEGER PRIMARY KEY CHECK (id = 1),
+    lifetime_score INTEGER NOT NULL DEFAULT 0
+  );
+
+  INSERT OR IGNORE INTO stats (id, lifetime_score) VALUES (1, 0);
 `);
+
+// Migrate older databases that predate the `awarded` column.
+const hasAwarded = db
+  .prepare(`PRAGMA table_info(deeds)`)
+  .all()
+  .some((col) => col.name === 'awarded');
+if (!hasAwarded) {
+  db.exec(`ALTER TABLE deeds ADD COLUMN awarded INTEGER NOT NULL DEFAULT 0`);
+}
 
 module.exports = db;

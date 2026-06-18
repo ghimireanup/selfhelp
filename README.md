@@ -9,8 +9,10 @@ goes.
 
 - Add good deeds with an optional note and a difficulty (Easy +1, Medium +3, Hard +5).
 - Check a deed off to earn its points; it moves to the **Done** list.
-- A big **Success Score** with level badges: Getting Started → On a Roll →
-  Committed → Champion.
+- A big **Success Score** that is a cumulative lifetime total — it only ever
+  goes up. Points are awarded the first time a deed is completed and are never
+  taken back, even if you un-check or delete the deed afterwards.
+- Level badges: Getting Started → On a Roll → Committed → Champion.
 - Data is stored server-side in SQLite, so it persists across restarts and
   browsers.
 

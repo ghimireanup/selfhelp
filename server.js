@@ -11,12 +11,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Difficulty -> point reward. Anything else falls back to Easy.
 const ALLOWED_POINTS = new Set([1, 3, 5]);
 
-// Success Score = total points earned from completed deeds.
+// Success Score = cumulative lifetime points. It only ever goes up: each deed
+// awards its points the first time it is completed, and nothing — un-checking
+// or deleting — ever takes them back.
 function currentScore() {
-  const row = db
-    .prepare(`SELECT COALESCE(SUM(points), 0) AS score FROM deeds WHERE completed = 1`)
-    .get();
-  return row.score;
+  return db.prepare(`SELECT lifetime_score AS score FROM stats WHERE id = 1`).get().score;
+}
+
+function addToScore(points) {
+  db.prepare(`UPDATE stats SET lifetime_score = lifetime_score + ? WHERE id = 1`).run(points);
 }
 
 function listDeeds() {
@@ -59,6 +62,14 @@ app.patch('/api/deeds/:id', (req, res) => {
 
   const completed = deed.completed ? 0 : 1;
   const completedAt = completed ? new Date().toISOString() : null;
+
+  // Award points only the first time a deed is completed, so the lifetime
+  // score never double-counts and never drops when un-checking later.
+  if (completed && !deed.awarded) {
+    addToScore(deed.points);
+    db.prepare(`UPDATE deeds SET awarded = 1 WHERE id = ?`).run(deed.id);
+  }
+
   db.prepare(`UPDATE deeds SET completed = ?, completed_at = ? WHERE id = ?`).run(
     completed,
     completedAt,
