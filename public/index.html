@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SelfHelp — Good Deeds Tracker</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <h1>SelfHelp</h1>
+        <p class="tagline">Write the things that do you good. Do them. Watch your score climb.</p>
+        <div class="score-card">
+          <div class="score-value" id="score">0</div>
+          <div class="score-label">Success Score</div>
+          <div class="level-badge" id="level">Getting Started</div>
+        </div>
+      </header>
+
+      <section class="add-section">
+        <form id="add-form" class="add-form">
+          <input
+            type="text"
+            id="title"
+            name="title"
+            placeholder="Something good for you… (e.g. Go for a walk)"
+            autocomplete="off"
+            required
+          />
+          <input
+            type="text"
+            id="description"
+            name="description"
+            placeholder="Optional note"
+            autocomplete="off"
+          />
+          <select id="points" name="points" aria-label="Difficulty">
+            <option value="1">Easy · +1</option>
+            <option value="3">Medium · +3</option>
+            <option value="5">Hard · +5</option>
+          </select>
+          <button type="submit">Add</button>
+        </form>
+        <p class="form-error" id="form-error" hidden></p>
+      </section>
+
+      <section class="lists">
+        <div class="list-block">
+          <h2>To Do <span class="count" id="todo-count">0</span></h2>
+          <ul id="todo-list" class="deed-list"></ul>
+          <p class="empty" id="todo-empty">Nothing yet — add a good deed above.</p>
+        </div>
+        <div class="list-block">
+          <h2>Done <span class="count" id="done-count">0</span></h2>
+          <ul id="done-list" class="deed-list"></ul>
+          <p class="empty" id="done-empty">Complete a deed to start earning points.</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
