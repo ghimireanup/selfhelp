@@ -1,0 +1,13 @@
+{
+  "name": "selfhelp",
+  "version": "1.0.0",
+  "description": "Track good deeds and watch your cumulative Success Score climb.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.3.0",
+    "express": "^4.19.2"
+  }
+}
